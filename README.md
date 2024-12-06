@@ -2,4 +2,4 @@
 Repo with python scripts for controlling a robot.
 
 ## Port notes
-- ```ttyUSB0``` - lidar
+- ```ttyUSB1``` - lidar

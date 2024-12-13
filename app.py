@@ -3,7 +3,6 @@ from sensor_msgs.msg import Image
 import cv2
 from cv_bridge import CvBridge
 import numpy as np
-import matplotlib.pyplot as plt
 from threading import Thread
 
 class ROSMapVisualizer:
@@ -25,7 +24,7 @@ class ROSMapVisualizer:
 
     def visualize(self):
         cv2.namedWindow("ROS Camera Feed", cv2.WINDOW_NORMAL)
-        while not rospy.is_shutdown() and self.running:
+        while self.running:
             if self.latest_frame is not None:
                 # Display the latest frame
                 cv2.imshow("ROS Camera Feed", self.latest_frame)
@@ -36,18 +35,17 @@ class ROSMapVisualizer:
         cv2.destroyAllWindows()
 
     def start_visualization(self):
-        rospy.init_node("ros_map_visualizer", anonymous=True)
         self.subscriber()
         visualization_thread = Thread(target=self.visualize)
         visualization_thread.start()
-        rospy.spin()
-        self.running = False
+        try:
+            while self.running:
+                rospy.sleep(0.1)  # Use a small sleep to keep the thread running
+        except KeyboardInterrupt:
+            self.running = False
         visualization_thread.join()
 
 if __name__ == "__main__":
     topic_name = input("Enter the topic name to subscribe to (e.g., '/camera/image_raw'): ")
     visualizer = ROSMapVisualizer(topic_name)
-    try:
-        visualizer.start_visualization()
-    except rospy.ROSInterruptException:
-        print("Shutting down ROS Map Visualizer")
+    visualizer.start_visualization()

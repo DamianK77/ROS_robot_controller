@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona z Kamerą i Mapą</title>
+    <style>
+        /* Kontener dla obu obrazów, aby były obok siebie */
+        .image-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Ustawienie rozmiaru obrazów, aby były odpowiednio widoczne */
+        img {
+            width: 48%; /* Obrazy zajmują 48% szerokości, aby zmieściły się obok siebie */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wideo z kamery i mapa SLAM</h1>
+
+    <!-- Kontener dla obrazów -->
+    <div class="image-container">
+        <!-- Obraz z kamery -->
+        <img src="{{ url_for('video_feed_camera') }}" alt="Kamera">
+
+        <!-- Obraz mapy SLAM -->
+        <img src="{{ url_for('video_feed_map') }}" alt="Mapa SLAM">
+    </div>
+</body>
+</html>
